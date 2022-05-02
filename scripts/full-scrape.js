@@ -1,5 +1,5 @@
 // scrape a new site, once repo has been established
-// usage: deno run --allow-net --allow-read --allow-write=wiki-safe-pdx scripts/full-scrape.js protocol site
+// usage: deno run --allow-net --allow-read --allow-write=.. scripts/full-scrape.js protocol site
 
 const protocol = Deno.args[0]
 const site = Deno.args[1]
@@ -19,12 +19,13 @@ for (const info of sitemap) {
   inflight.push(backup(site, info.slug))
 }
 await Promise.all(inflight)
+
 const sync = JSON.parse(Deno.readTextFileSync('status/sync.json'))
-sync[site] = {update: Date.now()}
+sync[site] = {protocol, update: Date.now()}
 Deno.writeTextFileSync('status/sync.json',JSON.stringify(sync,null,2))
+console.log(site) // pipe to commit-push script
 
 async function backup(site, slug) {
-  console.log(slug)
   const json = await fetch(`${protocol}://${site}/${slug}.json`).then(res => res.json())
   await Deno.writeTextFile(`../${site}/${slug}`, JSON.stringify(json,null,2))
 }

@@ -1,5 +1,14 @@
 {
   "goals.pod.rodwell.me": {
+    "protocol": "https",
     "update": 1651447901828
+  },
+  "ward.asia.wiki.org": {
+    "protocol": "http",
+    "update": 1651451029333
+  },
+  "goals.pods.wiki.dbbs.co": {
+    "protocol": "https",
+    "update": 1651453631768
   }
 }
